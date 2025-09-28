@@ -1,0 +1,54 @@
+function hasZeroSumTriplet(arr) {
+    const n = arr.length;
+
+    // Step 1: Sort the array to use two-pointer approach
+    arr.sort((a, b) => a - b);
+
+    // Step 2: Iterate through the array
+    for (let i = 0; i < n - 2; i++) {
+        let left = i + 1;         // left pointer just after i
+        let right = n - 1;        // right pointer at the end
+
+        // Step 3: Use two-pointer technique
+        while (left < right) {
+            const sum = arr[i] + arr[left] + arr[right];
+
+            if (sum === 0) {
+                // Triplet found with zero sum
+                return "Yes";
+            } else if (sum < 0) {
+                // If sum is too small, move left pointer to increase it
+                left++;
+            } else {
+                // If sum is too large, move right pointer to decrease it
+                right--;
+            }
+        }
+    }
+
+    // No triplet found that sums to zero
+    return "No";
+}
+
+// ---------- Input Handling ----------
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+let inputLines = [];
+rl.on('line', (line) => {
+    inputLines.push(line.trim());
+    if (inputLines.length === 2) {
+        rl.close();
+    }
+});
+
+rl.on('close', () => {
+    const n = parseInt(inputLines[0]); // Size of array
+    const arr = inputLines[1].split(' ').map(Number); // Transaction amounts
+    const result = hasZeroSumTriplet(arr); // Run the function
+    console.log(result); // Output result
+});
